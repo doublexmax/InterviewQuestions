@@ -1,4 +1,21 @@
 """
+TOPIC: UNIT CONVERSION 
+SUBJECTS: Graph Traversal/Representation, Memoization
+
+This question came from: https://www.youtube.com/watch?v=V8DGdPkBBxg
+
+This question regards answering queries of exchaning a value from one unit to another, or determining if that conversion is impossible.
+There is no points for parsing; the facts & queries are provided as tuples.
+
+We can solve this question be essentially creating a graph, with the a node representing a unit and its edges being the units it can convert to as given from the facts.
+From here, all we have to do is basically a DFS and go from our node we are converting from to the node representing the unit we are attempting to convert to. If no path is found, then we say "not convertible".
+
+Once the graph (represented via dic, with key = node and value = list of edges) is made, we run DFS with basic memoization through the seenUnits arr.
+
+"""
+
+
+"""
 example facts:
 	m = 3.28 ft
 	ft = 12 in
