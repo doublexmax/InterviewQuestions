@@ -47,10 +47,14 @@ def convertUnits(facts, queries):
 		unitFrom = fact[0]
 		unitVal = fact[1]
 		unitTo = fact[2]
+
+		# develop edge (unitFrom, unitTo) with provided conversion factor
 		if dic.get(unitFrom, None) is None:
 			dic[unitFrom] = [(unitVal, unitTo)]
 		else:
 			dic[unitFrom].append((unitVal, unitTo))
+
+		# develop edge (unitTo, unitFrom) with the inverse of the same conversion factor
 		if dic.get(unitTo, None) is None:
 			dic[unitTo] = [(1/unitVal, unitFrom)]
 		else:
@@ -58,6 +62,7 @@ def convertUnits(facts, queries):
 
 	for query in queries:
 		seenUnits = []
+		# if for some reason the requested unit is the same as given, just return the provided val
 		if query[1] == query[2]:
 			response.append(x)
 		else:
@@ -71,16 +76,20 @@ def convert(convertFrom, convertTo, x, seenUnits, dic):
 		uVal = unit[0]
 		uName = unit[1]
 
+		# if the current node is already seen, go to the next
 		if uName in seenUnits:
 			continue
 		
+		# found our requested unit
 		if uName == convertTo:
 			return uVal * x
 		
 		seenUnits.append(uName)
 
+		# iterate over out edges of current node
 		seekFurther = convert(uName, convertTo, uVal, seenUnits, dic)
 
+		# found a valid edge
 		if seekFurther != "not convertible!":
 			return seekFurther * x
 
